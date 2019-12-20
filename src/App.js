@@ -1,81 +1,132 @@
-import React, { Component } from "react"
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import Fade from '@material-ui/core/Fade';
-import Button from '@material-ui/core/Button';
-import ReactDOM from 'react-dom'
-import 'typeface-roboto';
-import logo from "./logo.svg"
-import "./App.css"
+import React, { Component } from "react";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import BottomNavigation from "@material-ui/core/BottomNavigation";
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import Fade from "@material-ui/core/Fade";
+import Button from "@material-ui/core/Button";
+import ReactDOM from "react-dom";
+import "typeface-roboto";
+import logo from "./logo.svg";
+import "./App.css";
+import ApolloClient from "apollo-boost";
+import RadioIcon from "@material-ui/icons/Radio";
+import ChatIcon from "@material-ui/icons/Chat";
+
+const client = new ApolloClient({
+  uri: "[Insert URI of GraphQL endpoint]"
+});
 
 class LambdaDemo extends Component {
   constructor(props) {
-    super(props)
-    this.state = { loading: false, msg: "Send it into the void or send an anonymous message." }
+    super(props);
+    this.state = {
+      loading: false,
+      msg: "Send it into the void or send an anonymous message."
+    };
   }
 
   handleClick = api => e => {
-    e.preventDefault()
-    ReactDOM.render(<App/>, document.getElementById('root'));
-    this.setState({ loading: true })
+    e.preventDefault();
+    document.getElementById("textinput").value = "";
+    this.setState({ loading: true });
     fetch("/.netlify/functions/" + api)
       .then(response => response.json())
-      .then(json => this.setState({ loading: false, msg: json.msg }))
-  }
+      .then(json => this.setState({ loading: false, msg: json.msg }));
+  };
 
   render() {
-    const { loading, msg } = this.state
+    const { loading, msg } = this.state;
     const buttonStyle = {
-      margin: "12px",
+      margin: "12px"
     };
     return (
       <p>
-        
         <span>{msg}</span>
         <br />
         <Button
-        variant="contained"
-        color="secondary"
-        onClick={this.handleClick("hello")}
-        style={buttonStyle}
-      >
-        {loading ? "Sending..." : "Send to the Void"}
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        style={buttonStyle}
-      >
-        {loading ? "Sending..." : "Send to the Skies"}
-      </Button>
-
-        
+          variant="contained"
+          color="secondary"
+          onClick={this.handleClick("hello")}
+          style={buttonStyle}
+        >
+          {loading ? "Sending..." : "Send to the Void"}
+        </Button>
+        <Button variant="contained" color="primary" style={buttonStyle}>
+          {loading ? "Sending..." : "Send to the Skies"}
+        </Button>
       </p>
-    )
+    );
   }
 }
 
 class App extends Component {
   render() {
     const textAreaStyle = {
-      width: "60%",
+      width: "75%",
       color: "#515b61",
       backgroundColor: "#bfe0f7",
       padding: "10px",
+      margin: "20px",
       fontFamily: "Arial",
       fontSize: "calc(10px + 1vmin)",
-      borderRadius: "6px",
+      borderRadius: "6px"
     };
+    const navStyle = {
+      color: "#515b61",
+      backgroundColor: "#00081f",
+      fontFamily: "Arial",
+      fontSize: "calc(10px + 1vmin)",
+      borderRadius: "6px"
+    };
+
     return (
       <div className="App">
-        <header className="App-header">
+        
+        
+        
+        <div class="panel" id="home">
+          <h1>The Human Experience</h1>
+          <p>by Aster Wu</p>
+          <div class="menu">
+          <a class="menu__link" href="#slice" data-hover="Void">
+            Void
+          </a>
+          <a class="menu__link" href="#fade" data-hover="Radio">
+            Radio
+          </a>
+        </div>
+        </div>
+        
+        <div class="panel" id="slice">
+          <div class="panel__content">
+        
           {/* <img src={logo} className="App-logo" alt="logo" /> */}
           <p>All messages are 100% anonymous. Play nice.</p>
-          <TextareaAutosize aria-label="empty textarea" id="textinput" rowsMin={25} rowsMax={25} placeholder="" style={textAreaStyle} />
+          <TextareaAutosize
+            aria-label="empty textarea"
+            id="textinput"
+            rowsMin={25}
+            rowsMax={25}
+            placeholder=""
+            style={textAreaStyle}
+          />
           <LambdaDemo />
-        </header>
+          <a href="#home">Close me.</a>
+       
+            
+          </div>
+        </div>
+
+        <div class="panel" id="fade">
+          <div class="panel__content">
+            <a href="#home">Under Construction.</a>
+          </div>
+        </div>
+
+        
       </div>
-    )
+    );
   }
 }
 
-export default App
+export default App;
