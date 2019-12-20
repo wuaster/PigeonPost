@@ -129,6 +129,7 @@ a {
   transition: all 700ms;
   transition-delay: 600ms;
   margin-top: -5%;
+  width: 75%
 }
 /* Panel content animation after open */
 .panel:target .panel__content {
