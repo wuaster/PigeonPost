@@ -1,19 +1,14 @@
 import React, { Component } from "react";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import Fade from "@material-ui/core/Fade";
 import Button from "@material-ui/core/Button";
-import ReactDOM from "react-dom";
 import "typeface-roboto";
-import logo from "./logo.svg";
 import "./App.css";
 import ApolloClient from "apollo-boost";
-import RadioIcon from "@material-ui/icons/Radio";
-import ChatIcon from "@material-ui/icons/Chat";
+import { gql } from "apollo-boost";
+import { ApolloProvider, Query } from "react-apollo";
 
 const client = new ApolloClient({
-  uri: "[Insert URI of GraphQL endpoint]"
+  uri: "/.netlify/functions/graphql"
 });
 
 class LambdaDemo extends Component {
@@ -41,6 +36,17 @@ class LambdaDemo extends Component {
     };
     return (
       <p>
+        <ApolloProvider client={client}>
+          <Query
+            query={gql`
+              {
+                hello
+              }
+            `}
+          >
+            {({ data }) => <div>A greeting from the server: {data}</div>}
+          </Query>
+        </ApolloProvider>
         <span>{msg}</span>
         <br />
         <Button
@@ -71,59 +77,43 @@ class App extends Component {
       fontSize: "calc(10px + 1vmin)",
       borderRadius: "6px"
     };
-    const navStyle = {
-      color: "#515b61",
-      backgroundColor: "#00081f",
-      fontFamily: "Arial",
-      fontSize: "calc(10px + 1vmin)",
-      borderRadius: "6px"
-    };
-
     return (
       <div className="App">
-        
-        
-        
         <div class="panel" id="home">
           <h1>The Human Experience</h1>
           <p>by Aster Wu</p>
           <div class="menu">
-          <a class="menu__link" href="#slice" data-hover="Void">
-            Void
-          </a>
-          <a class="menu__link" href="#fade" data-hover="Radio">
-            Radio
-          </a>
-        </div>
-        </div>
-        
-        <div class="panel" id="slice">
-          <div class="panel__content">
-        
-          {/* <img src={logo} className="App-logo" alt="logo" /> */}
-          <p>All messages are 100% anonymous. Play nice.</p>
-          <TextareaAutosize
-            aria-label="empty textarea"
-            id="textinput"
-            rowsMin={25}
-            rowsMax={25}
-            placeholder=""
-            style={textAreaStyle}
-          />
-          <LambdaDemo />
-          <a href="#home">Close me.</a>
-       
-            
+            <a class="menu__link" href="#void" data-hover="Void">
+              Void
+            </a>
+            <a class="menu__link" href="#radio" data-hover="Radio">
+              Radio
+            </a>
           </div>
         </div>
 
-        <div class="panel" id="fade">
+        <div class="panel" id="void">
+          <div class="panel__content">
+            {/* <img src={logo} className="App-logo" alt="logo" /> */}
+            <p>All messages are 100% anonymous. Play nice.</p>
+            <TextareaAutosize
+              aria-label="empty textarea"
+              id="textinput"
+              rowsMin={25}
+              rowsMax={25}
+              placeholder=""
+              style={textAreaStyle}
+            />
+            <LambdaDemo />
+            <a href="#home">Close me.</a>
+          </div>
+        </div>
+
+        <div class="panel" id="radio">
           <div class="panel__content">
             <a href="#home">Under Construction.</a>
           </div>
         </div>
-
-        
       </div>
     );
   }
