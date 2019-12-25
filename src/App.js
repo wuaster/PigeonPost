@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import Button from "@material-ui/core/Button";
-import "typeface-roboto";
-import "./App.css";
-import ApolloClient from "apollo-boost";
-import { gql } from "apollo-boost";
+import ApolloClient, { gql } from "apollo-boost";
 import { ApolloProvider, Query } from "react-apollo";
+import "typeface-roboto";
+import logo from "./logo.svg";
+import "./App.css";
 
 const client = new ApolloClient({
   uri: "/.netlify/functions/graphql"
 });
 
-// Replace the previous LambdaDemo with the code below:
 const LambdaDemo = () => (
   <ApolloProvider client={client}>
     <Query
@@ -21,26 +20,36 @@ const LambdaDemo = () => (
         }
       `}
     >
-      {({ data }) =>
-        <div>A greeting from the server: {data.hello}</div>}
+      {({ data }) => <div>A greeting from the server: {data.hello}</div>}
     </Query>
   </ApolloProvider>
 );
 
-{/* <Button
-          variant="contained"
-          color="secondary"
-          onClick={this.handleClick("hello")}
-          style={buttonStyle}
-        >
-          {loading ? "Sending..." : "Send to the Void"}
-        </Button>
-        <Button variant="contained" color="primary" style={buttonStyle}>
-          {loading ? "Sending..." : "Send to the Skies"}
-        </Button> */}
-
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      msg: "Send it into the void or send an anonymous message."
+    };
+  }
+
+
+  handleClick = api => e => {
+    e.preventDefault();
+    document.getElementById("textinput").value = "";
+    this.setState({ loading: true });
+    fetch("/.netlify/functions/" + api)
+      .then(response => response.json())
+      .then(json => this.setState({ loading: false, msg: "Sent to the Void." }));
+  };
+
   render() {
+    const { loading, msg } = this.state;
+    const buttonStyle = {
+      margin: "12px"
+    };
     const textAreaStyle = {
       width: "75%",
       color: "#515b61",
@@ -78,7 +87,18 @@ class App extends Component {
               placeholder=""
               style={textAreaStyle}
             />
-            <LambdaDemo />
+            <span>{msg}</span>
+            <Button
+          variant="contained"
+          color="secondary"
+          onClick={this.handleClick("hello")}
+          style={buttonStyle}
+        >
+          {loading ? "Sending..." : "Send to the Void"}
+        </Button>
+        {/* <Button variant="contained" color="primary" style={buttonStyle}>
+          {loading ? "Sending..." : "Send to the Skies"}
+        </Button> */}
             <a href="#home">Close me.</a>
           </div>
         </div>
