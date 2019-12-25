@@ -9,7 +9,7 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     hello: (parent, args, context) => {
-      return "Hello, world!";
+      return "Sent to the Skies";
     }
   }
 };

@@ -11,45 +11,23 @@ const client = new ApolloClient({
   uri: "/.netlify/functions/graphql"
 });
 
-class LambdaDemo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-      msg: "Send it into the void or send an anonymous message."
-    };
-  }
+// Replace the previous LambdaDemo with the code below:
+const LambdaDemo = () => (
+  <ApolloProvider client={client}>
+    <Query
+      query={gql`
+        {
+          hello
+        }
+      `}
+    >
+      {({ data }) =>
+        <div>A greeting from the server: {data.hello}</div>}
+    </Query>
+  </ApolloProvider>
+);
 
-  handleClick = api => e => {
-    e.preventDefault();
-    document.getElementById("textinput").value = "";
-    this.setState({ loading: true });
-    fetch("/.netlify/functions/" + api)
-      .then(response => response.json())
-      .then(json => this.setState({ loading: false, msg: json.msg }));
-  };
-
-  render() {
-    const { loading, msg } = this.state;
-    const buttonStyle = {
-      margin: "12px"
-    };
-    return (
-      <p>
-        <ApolloProvider client={client}>
-          <Query
-            query={gql`
-              {
-                hello
-              }
-            `}
-          >
-            {({ data }) => <div>A greeting from the server: {data}</div>}
-          </Query>
-        </ApolloProvider>
-        <span>{msg}</span>
-        <br />
-        <Button
+{/* <Button
           variant="contained"
           color="secondary"
           onClick={this.handleClick("hello")}
@@ -59,11 +37,7 @@ class LambdaDemo extends Component {
         </Button>
         <Button variant="contained" color="primary" style={buttonStyle}>
           {loading ? "Sending..." : "Send to the Skies"}
-        </Button>
-      </p>
-    );
-  }
-}
+        </Button> */}
 
 class App extends Component {
   render() {
