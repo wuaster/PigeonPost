@@ -1,5 +1,6 @@
 // src/lambda/graphql.js
 const { ApolloServer, gql } = require("apollo-server-lambda");
+
 const typeDefs = gql`
   type Query {
     hello: String
@@ -9,16 +10,14 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     hello: (parent, args, context) => {
-      return "Sent to the Skies";
+      return "Hello, world!";
     }
   }
 };
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
-  introspection: true,
-  playground: true,
+  resolvers
 });
 
 exports.handler = server.createHandler();
