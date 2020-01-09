@@ -53,7 +53,6 @@ p {
   margin: 0;
 }
 a {
-
   text-align: center;
   text-decoration: none;
   color: #fff;
@@ -118,7 +117,6 @@ a {
 }
 /* panel content (only for animation delay after open) */
 .panel__content {
-  font-weight: 300;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -144,7 +142,7 @@ a {
   z-index: 1;
   background: radial-gradient(ellipse at center, #ac85c5 -23%, #123a4c 100%);
 }
-/*  Specific panel "Void" */
+/*  Specific panel "void" */
 /* •••••••••••••••••••••••••••••••• */
 .panel#void {
   background: radial-gradient(ellipse at center, #44828a 29%, #061527 100%);
@@ -155,7 +153,7 @@ a {
 .panel#void:target {
   transform: translate3d(0, 0, 0);
 }
-/*  Specific panel "Radio" effect */
+/*  Specific panel "radio" effect */
 /* •••••••••••••••••••••••••••••••• */
 .panel#radio {
   background-color: #122b21;
@@ -164,6 +162,32 @@ a {
   pointer-events: none;
 }
 .panel#radio:target {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/*  Specific panel "Sisyphus" effect */
+/* •••••••••••••••••••••••••••••••• */
+.panel#sisyphus {
+  background-color: #460c22;
+  opacity: 0;
+  transition: all 800ms;
+  pointer-events: none;
+}
+.panel#sisyphus:target {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/*  Specific panel "about" effect */
+/* •••••••••••••••••••••••••••••••• */
+.panel#about {
+  background-color: #1c313a;
+  opacity: 0;
+  transition: all 800ms;
+  pointer-events: none;
+}
+.panel#about:target {
   opacity: 1;
   pointer-events: auto;
 }
